@@ -1,6 +1,6 @@
 # statelegislators
 
-Assign social media accounts to state legislators from the Open States database using the Google Civic API
+Assign social media accounts to state legislators from the Open States database using the Google Civic API.
 
 This program assigns social media accounts to the state legislators provided by Open States. For each district in each chamber in
 each state provided by Open States,  the legislators in the the district are retrieved from Google, names are matched and 
