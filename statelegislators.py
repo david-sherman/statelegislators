@@ -79,13 +79,10 @@ class stateClass():
         for official in districtLegislators["officials"]:
             self.civicLegislatorCount = self.civicLegislatorCount + 1
 
-            # There may be no social media accounts associated with this legislator
-            # process the person anyway.
-
             accounts = []
             if "channels" in official: accounts = official["channels"]
 
-            # determine the last name.  Strip out punctuation and extra words
+            # determine the last name.  Strip out punctuation and prefixes
 
             name = ''.join(ch for ch in official['name'] if ch not in set( '.,'))
             components = name.lower().split(" ")
@@ -96,8 +93,9 @@ class stateClass():
 
             for person in openstatesLegislators:
                 openstatesname = person['first_name']  + " " + person['last_name']
+
                 # Two ways names can match.  (1) they simply do as in : "Robert Van Wagner" == "Robert Van Wagner"
-                # or  (2) their last names math as in :  "Julio E. Rodriguez Jr.  == "Rodriguez"
+                # or  (2) their last names match as in :  "Julio E. Rodriguez Jr.  == "Rodriguez"
 
                 if ( openstatesname == name ) or person['last_name'].lower() == last_name :
                     self.resultset[chamber].append( { "id" : person["id"], "name" : openstatesname, "accounts" : accounts})

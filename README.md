@@ -31,22 +31,31 @@ Sample file content from al.json:
 ``` 
  
  
- Note that the  Google Civic Information API is rate limited.  A delay, set at one second, is built into each call to
+ ### Notes
+
+__Rate Limits__
+
+The Google Civic Information API is rate limited.  A delay, set at one second, is built into each call to
  the API.  Change the delay if Google rate limits are encountered.  
  
- Known issues:  Matching names can fail for a variety of reasons. Name suffixes, like Jr an Sr can occasionally cause problems. Also
- the Open States API includes hyphenated names while the Civic api sometimes has part of the name.
-  When the match count is off,  a brief explanation is printed:
+ __Name Matching__
  
-```fl lower district ' 98' matched 0 of 1.
- --- civic :'Katie A. Edwards'
- --- openstates : 'Katie Edwards-Walpole'
-```
+ Name matching, as implemented, can fail for a variety of reasons.  
+ 
+ 1. Civic API names do not include accents. The Open States API does:  'Debra Marie Sarinana' -  'Debra M. Sariñana'
+ 
+ 2. The Open States API includes hyphenated names while the Civic api sometimes has only part of the name : 'Katie A. Edwards' -  'Katie Edwards-Walpole'
+ 
+ 3.  Suffixes, like jr, sr, III, etc, are stripped out.  Sometimes unusual suffixes appear and prevent a match
 
-Also note a few chambers are not directly mappable from OpenStates to Google Civic.  These chambers have
+A message is printed when no name match is found.
+
+__Non Numeric District Names__
+
+A few chambers are not directly mappable from OpenStates to Google Civic.  These chambers have
 non numeric district names and more research is required to map these to the Google Civic chamber numbering system.   Here are those chambers with a sample value shown for each.
  
-    ak upper P 
+    ```ak upper P 
     dc upper Ward 3    
     md lower 42B     
     ma upper Second Suffolk   
@@ -65,6 +74,8 @@ Learn more about the Google Civic Information API here: https://developers.googl
  The program requires an OpenStates API key and a Google Civic Information API key. StateLegislators
  was built using Python 3.6. 
  
+ 
+ ### Usage 
  __Usage:__   statelegislators.py  openstates_api_key   goggle_civic_api_key
  
  Sample Output :
