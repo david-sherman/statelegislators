@@ -55,7 +55,7 @@ __Non Numeric District Names__
 A few chambers are not directly mappable from OpenStates to Google Civic.  These chambers have
 non numeric district names and more research is required to map these to the Google Civic chamber numbering system.   Here are those chambers with a sample value shown for each.
  
-    ```ak upper P 
+    ak upper P 
     dc upper Ward 3    
     md lower 42B     
     ma upper Second Suffolk   
