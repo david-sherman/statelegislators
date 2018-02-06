@@ -51,7 +51,7 @@ class stateClass():
 
     openstates = None
     abbreviation = None
-    chambers = ['upper', 'lower']
+    chambers = [ 'upper','lower']
     resultset = {}
     openstateLegislatorCount = 0
     civicLegislatorCount = 0
@@ -75,6 +75,7 @@ class stateClass():
             print(districtLegislators)
             return None
 
+        matched = 0
         for official in districtLegislators["officials"]:
             self.civicLegislatorCount = self.civicLegislatorCount + 1
 
@@ -82,7 +83,6 @@ class stateClass():
             # process the person anyway.
 
             accounts = []
-            matched = 0
             if "channels" in official: accounts = official["channels"]
 
             # determine the last name.  Strip out punctuation and extra words
@@ -90,28 +90,29 @@ class stateClass():
             name = ''.join(ch for ch in official['name'] if ch not in set( '.,'))
             components = name.lower().split(" ")
             components.reverse()
-            if components[0] in ['jr', 'sr', 'ii', 'iii', 'iv', 'phd']: components.pop(0)
+            if components[0] in ['jr', 'sr', 'ii', 'iii', 'iv', 'phd', 'esq', 'md']: components.pop(0)
             last_name = components[0]
+
 
             for person in openstatesLegislators:
                 openstatesname = person['first_name']  + " " + person['last_name']
-
                 # Two ways names can match.  (1) they simply do as in : "Robert Van Wagner" == "Robert Van Wagner"
                 # or  (2) their last names math as in :  "Julio E. Rodriguez Jr.  == "Rodriguez"
 
                 if ( openstatesname == name ) or person['last_name'].lower() == last_name :
                     self.resultset[chamber].append( { "id" : person["id"], "name" : openstatesname, "accounts" : accounts})
+
                     matched = matched + 1
                     self.matched = self.matched + 1
                     if (len(accounts) > 0 ) :
                         self.matched_with_accounts  = self.matched_with_accounts + 1
 
-            if matched  != len(openstatesLegislators):
-                print("%s %s district '%3s' matched %s of %s." % (self.abbreviation, chamber, district, matched, len(openstatesLegislators)))
-                for official in  districtLegislators["officials"]:
-                   print( " --- civic :'%s'"  % official['name'] )
-                for person in openstatesLegislators:
-                    print( " --- openstates : '%s %s'" % (person['first_name'],person['last_name']))
+        if matched  != len(openstatesLegislators):
+            print("%s %s district '%3s' matched %s of %s." % (self.abbreviation, chamber, district, matched, len(openstatesLegislators)))
+            for official in  districtLegislators["officials"]:
+                print( " --- civic :'%s'"  % official['name'] )
+            for person in openstatesLegislators:
+                print( " --- openstates : '%s %s'" % (person['first_name'],person['last_name']))
 
     def processChamber(self, chamber, legislators):
         chambermap = {}
