@@ -46,7 +46,7 @@ The Google Civic Information API is rate limited.  A delay, set at one second, i
  
  2. The Open States API includes hyphenated names while the Civic api sometimes has only part of the name : 'Katie A. Edwards' -  'Katie Edwards-Walpole'
  
- 3.  Suffixes, like jr, sr, III, etc, are stripped out.  Sometimes unusual suffixes appear and prevent a match
+ 3.  Suffixes, like jr, sr, III, etc, are stripped out.  Unusual suffixes may appear and prevent a match.
 
 A message is printed when no name match is found.
 
