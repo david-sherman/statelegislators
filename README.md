@@ -5,7 +5,7 @@ Assign social media accounts to state legislators from the Open States database 
 This program assigns social media accounts to the state legislators provided by Open States. For each district in each chamber in
 each state provided by Open States,  the legislators in the the district are retrieved from Google, names are matched and 
 the accounts are assigned to the Open States legislator.  A json file is produced for each state which lists each legislator,
-thier Open States id and any associated social media acounts that have been found.
+their Open States id and any associated social media acounts that have been found.
 
 Sample file content from al.json:
 ```
@@ -42,7 +42,7 @@ The Google Civic Information API is rate limited.  A delay, set at one second, i
  
  Name matching, as implemented, can fail for a variety of reasons.  
  
- 1. Civic API names do not include accents. The Open States API does:  'Debra Marie Sarinana' -  'Debra M. Sariñana'
+ 1. Civic API names do not include accents.  'Debra Marie Sarinana'  - 'Debra M. Sariñana'
  
  2. The Open States API includes hyphenated names while the Civic api sometimes has only part of the name : 'Katie A. Edwards' -  'Katie Edwards-Walpole'
  
