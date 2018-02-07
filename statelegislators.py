@@ -4,7 +4,6 @@ from time import sleep
 import json
 import sys
 
-
 class openstates():
     headers = None
     base_url = "https://openstates.org/api/v1/"
@@ -57,6 +56,7 @@ class stateClass():
     civicLegislatorCount = 0
     matched = 0
     matched_with_accounts = 0
+    accounts = 0
 
 
     def __init__(self,oso,civic,abbreviation):
@@ -75,38 +75,41 @@ class stateClass():
             print(districtLegislators)
             return None
 
+
         matched = 0
+
         for official in districtLegislators["officials"]:
             self.civicLegislatorCount = self.civicLegislatorCount + 1
-
-            accounts = []
-            if "channels" in official: accounts = official["channels"]
 
             # determine the last name.  Strip out punctuation and prefixes
 
             name = ''.join(ch for ch in official['name'] if ch not in set( '.,'))
+            official['adjusted_name'] = name
             components = name.lower().split(" ")
             components.reverse()
             if components[0] in ['jr', 'sr', 'ii', 'iii', 'iv', 'phd', 'esq', 'md']: components.pop(0)
-            last_name = components[0]
+            official['last_name'] = components[0]
 
+        for person in openstatesLegislators:
+            openstatesname = person['first_name']  + " " + person['last_name']
 
-            for person in openstatesLegislators:
-                openstatesname = person['first_name']  + " " + person['last_name']
+            for official in districtLegislators["officials"]:
 
                 # Two ways names can match.  (1) they simply do as in : "Robert Van Wagner" == "Robert Van Wagner"
                 # or  (2) their last names match as in :  "Julio E. Rodriguez Jr.  == "Rodriguez"
 
-                if ( openstatesname == name ) or person['last_name'].lower() == last_name :
+                if ( openstatesname == official["adjusted_name"] ) or person['last_name'].lower() == official["last_name"] :
+                    accounts = []
+                    if "channels" in official: accounts = official["channels"]
                     self.resultset[chamber].append( { "id" : person["id"], "name" : openstatesname, "accounts" : accounts})
-
+                    self.accounts = self.accounts + len(accounts)
                     matched = matched + 1
                     self.matched = self.matched + 1
                     if (len(accounts) > 0 ) :
                         self.matched_with_accounts  = self.matched_with_accounts + 1
 
         if matched  != len(openstatesLegislators):
-            print("%s %s district '%3s' matched %s of %s." % (self.abbreviation, chamber, district, matched, len(openstatesLegislators)))
+            print("Match issue: %s %s district '%3s' matched %s of %s." % (self.abbreviation, chamber, district, matched, len(openstatesLegislators)))
             for official in  districtLegislators["officials"]:
                 print( " --- civic :'%s'"  % official['name'] )
             for person in openstatesLegislators:
@@ -140,6 +143,8 @@ class stateClass():
         print( "%s :  %s google civic API legislators found" % (self.abbreviation, self.civicLegislatorCount ))
         print( "%s :  %s matched legislators" % (self.abbreviation, self.matched ))
         print( "%s :  %s matched legislators with social media accounts" % (self.abbreviation, self.matched_with_accounts ))
+        print( "%s :  %s assigned accounts" % (self.abbreviation, self.accounts ))
+
         print( "%s :  %s " % ( self.abbreviation, filename ))
 
 
@@ -152,6 +157,8 @@ civic = google(sys.argv[2])
 states = oso.metatdata()
 
 for item in states:
+    if item["abbreviation"] == 'pr' : continue
     state = stateClass(oso, civic, item["abbreviation"])
+
     state.process()
 
