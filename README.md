@@ -5,7 +5,7 @@ Assign social media accounts to state legislators from the Open States database 
 This program assigns social media accounts to the state legislators provided by Open States. For each district in each chamber in
 each state provided by Open States,  the legislators in the the district are retrieved from Google, names are matched and 
 the accounts are assigned to the Open States legislator.  A json file is produced for each state which lists each legislator,
-their Open States id and any associated social media accounts that have been found.
+their Open States id and any associated social media accounts that have been found.  Files are placed in the data subdirectory.
 
 Sample file content from al.json:
 ```

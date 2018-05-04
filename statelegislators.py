@@ -135,7 +135,7 @@ class stateClass():
         for chamber in self.chambers:
             self.processChamber(chamber, oso.stateLegislators(self.abbreviation,chamber))
 
-        filename = "%s.json" % self.abbreviation
+        filename = "data/%s.json" % self.abbreviation
         with open(filename, 'w') as outfile:
             json.dump(self.resultset, outfile)
         print("----------------------------------------")
